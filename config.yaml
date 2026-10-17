@@ -1,0 +1,61 @@
+# Lebanese Loto research system — configuration
+# All paths are relative to the repository root.
+
+game:
+  name: "Lebanese Loto (LLDJ)"
+  pool_size: 42          # numbers 1..42
+  pick: 6                # six distinct main numbers
+  bonus_from_remaining: true   # additional number drawn from the 36 remaining balls
+  first_draw: 1
+  first_draw_date: "2002-09-12"
+
+scraper:
+  base_url: "https://www.lldj.com"
+  draw_url: "https://www.lldj.com/en/LatestResults/Loto?draw={draw}"
+  latest_url: "https://www.lldj.com/en/LatestResults/Loto"
+  index_url: "https://www.lldj.com/en/LatestResults/GetNextResultDrawsPage"
+  index_page_size: 20
+  user_agent: "LotoResearch/1.0 (personal statistical research; low request rate)"
+  min_interval_seconds: 1.0     # at most ~1 request per second
+  timeout_seconds: 30
+  max_retries: 5
+  backoff_base_seconds: 2.0
+  raw_cache_dir: "data/raw_html"
+
+paths:
+  data_dir: "data"
+  reports_dir: "reports"
+  predictions_dir: "predictions"
+  artifacts_dir: "artifacts"
+  logs_dir: "logs"
+  csv: "data/loto_history.csv"
+  parquet: "data/loto_history.parquet"
+  sqlite: "data/loto_database.sqlite"
+  quality_report: "data/data_quality_report.json"
+
+analysis:
+  rolling_windows: [10, 20, 50, 100, 250, 500]
+  lags: [1, 2, 3, 5, 10, 20, 50]
+  alpha: 0.05
+  fdr_method: "fdr_bh"
+
+simulation:
+  seed: 20261017
+  n_histories: 10000         # full synthetic histories (each the length of the real history)
+  n_draws_bulk: 5000000      # bulk fair draws for structural-property probabilities
+  batch_size: 250000
+
+backtest:
+  # Walk-forward: train on draws < t, predict draw t.
+  min_train_draws: 500       # first prediction uses at least this many past draws
+  tuning_end_fraction: 0.70  # draws [min_train, 70%) used for model selection
+  holdout_fraction: 0.15     # final untouched chronological test period (last 15%)
+  refit_every: 25            # ML models refit every N draws (stat models update every draw)
+  n_tickets: 1               # tickets per draw for the primary comparison
+  n_permutations: 1000       # permutation / shuffled-history controls
+  seed: 7
+
+prediction:
+  n_candidates: 10
+  seed: 2459
+  default_filter_mode: "none"   # none | conservative | moderate | aggressive
