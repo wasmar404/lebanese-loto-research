@@ -146,11 +146,12 @@ def step_analyze() -> dict:
 
 
 def step_backtest(quick: bool = False, controls: int = 20) -> dict:
-    from .backtest import negative_controls, run_backtest
+    from .backtest import bonus_experiment, negative_controls, run_backtest
     t0 = time.time()
     df = _load()
     res = run_backtest(df, quick=quick)
     R, A = p("reports_dir"), p("artifacts_dir")
+    bonus_experiment(df).to_csv(R / "bonus_experiment.csv", index=False)
     res["comparison"].to_csv(R / "model_comparison.csv", index=False)
     res["per_draw"].to_csv(R / "backtesting_results.csv", index=False)
     res["trials"].to_csv(R / "tuning_trials.csv", index=False)

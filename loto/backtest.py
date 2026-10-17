@@ -345,6 +345,43 @@ def portfolio_comparison(probs, ind, rng_period, models, seed, n_tickets: int = 
     return pd.DataFrame(rows)
 
 
+# ----------------------------------------------------------------------------- bonus experiment
+def bonus_experiment(df: pd.DataFrame) -> pd.DataFrame:
+    """Walk-forward: can past bonus numbers predict the next bonus number?
+
+    Strategies predict one bonus number per draw using only earlier draws. Unconditional
+    chance of guessing the bonus is 1/42. (If the six main numbers were known in advance, a
+    guess among the remaining 36 would succeed 1/36 of the time; the main numbers are not
+    known before the draw, so 1/42 is the relevant baseline.)
+    """
+    b = df["bonus"].to_numpy()
+    N = len(b)
+    per = periods(N)
+    rng = np.random.default_rng(load_config()["backtest"]["seed"] + 77)
+    counts = np.zeros(43)
+    preds = {"hot_bonus": [], "cold_bonus": [], "repeat_last_bonus": [], "random": []}
+    for t in range(N):
+        if t >= per["all_oos"][0]:
+            c = counts[1:]
+            preds["hot_bonus"].append(int(np.argmax(c + rng.random(42) * 1e-6) + 1))
+            preds["cold_bonus"].append(int(np.argmin(c + rng.random(42) * 1e-6) + 1))
+            preds["repeat_last_bonus"].append(int(b[t - 1]))
+            preds["random"].append(int(rng.integers(1, 43)))
+        counts[b[t]] += 1
+    actual = b[per["all_oos"][0]:]
+    rows = []
+    for name, pr in preds.items():
+        pr = np.array(pr)
+        for pname in ("selection", "holdout", "all_oos"):
+            lo, hi = per[pname]
+            sl = slice(lo - per["all_oos"][0], hi - per["all_oos"][0])
+            hits = int((pr[sl] == actual[sl]).sum())
+            n = hi - lo
+            rows.append({"strategy": name, "period": pname, "n_draws": n, "correct": hits, "hit_rate": hits / n,
+                         "chance_rate": 1 / 42, "p_better_than_chance": float(stats.binom.sf(hits - 1, n, 1 / 42))})
+    return pd.DataFrame(rows)
+
+
 # ----------------------------------------------------------------------------- negative controls
 def _stat_edges(ind: np.ndarray, params: dict, per: dict) -> dict:
     out = {}

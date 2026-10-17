@@ -10,3 +10,4 @@ artifacts/backtest_probs.npz
 catboost_info/
 .venv/
 .DS_Store
+artifacts/sim_histories_*.parquet

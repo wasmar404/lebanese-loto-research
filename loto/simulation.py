@@ -136,9 +136,14 @@ def _sim_batch(seed: int, n_hist: int, N: int) -> list[dict]:
 
 
 def simulate_histories(N: int, n_histories: int | None = None, seed: int | None = None) -> pd.DataFrame:
+    from .config import p as _p
     cfg = load_config()["simulation"]
     n_histories = n_histories or cfg["n_histories"]
     seed = cfg["seed"] if seed is None else seed
+    cache = _p("artifacts_dir") / f"sim_histories_N{N}_n{n_histories}_s{seed}.parquet"
+    if cache.exists():
+        log.info("loading cached fair histories %s", cache.name)
+        return pd.read_parquet(cache)
     n_batches = max(N_JOBS * 4, 1)
     sizes = [n_histories // n_batches + (i < n_histories % n_batches) for i in range(n_batches)]
     seeds = np.random.SeedSequence(seed).spawn(n_batches)
@@ -148,6 +153,7 @@ def simulate_histories(N: int, n_histories: int | None = None, seed: int | None 
     )
     df = pd.DataFrame([r for batch in res for r in batch])
     log.info("simulated %d fair histories of %d draws in %.1fs", len(df), N, time.time() - t0)
+    df.to_parquet(cache, index=False)
     return df
 
 
