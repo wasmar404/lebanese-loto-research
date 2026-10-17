@@ -29,8 +29,18 @@ def test_rules(df):
 
 
 def test_contiguous_and_chronological(df):
-    assert df.draw.tolist() == list(range(1, len(df) + 1))
-    assert pd.to_datetime(df.draw_date).is_monotonic_increasing
+    assert df.draw.tolist() == list(range(1, len(df) + 1))          # every published draw ID present
+    a = df[df.analysis_include & ~df.date_uncertain]
+    assert pd.to_datetime(a.draw_date).is_monotonic_increasing
+    assert pd.to_datetime(a.draw_date).is_unique
+
+
+def test_placeholder_duplicates_excluded(df):
+    a = df[df.analysis_include]
+    key = a[["n1", "n2", "n3", "n4", "n5", "n6", "bonus"]].astype(str).agg("-".join, axis=1).to_numpy()
+    assert (key[1:] != key[:-1]).all()
+    excluded = df.loc[~df.analysis_include, "draw"].tolist()
+    assert excluded == [379, 380, 381, 382, 383, 384, 385, 386, 387, 462, 569]
 
 
 def test_known_draws(df):

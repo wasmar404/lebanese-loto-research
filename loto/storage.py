@@ -55,14 +55,17 @@ def save_dataset(draws: pd.DataFrame, prizes: pd.DataFrame) -> None:
     log.info("saved %d draws to CSV, Parquet and SQLite", len(draws))
 
 
-def load_draws(validated_only: bool = True) -> pd.DataFrame:
-    """Load the clean dataset. Refuses unvalidated data unless validated_only=False."""
+def load_draws(validated_only: bool = True, include_excluded: bool = False) -> pd.DataFrame:
+    """Load the clean dataset (genuine draws only unless include_excluded=True).
+    Refuses unvalidated data unless validated_only=False."""
     if validated_only:
         qr = p("quality_report")
         if not qr.exists() or not json.loads(qr.read_text()).get("passed"):
             raise SystemExit("Dataset has not passed validation. Run `python -m loto validate` first.")
     df = pd.read_parquet(p("parquet"))
     df["draw_date"] = pd.to_datetime(df["draw_date"])
+    if include_excluded is False and "analysis_include" in df:
+        df = df[df["analysis_include"].astype(bool)]
     return df.sort_values("draw").reset_index(drop=True)
 
 

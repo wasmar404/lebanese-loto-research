@@ -1,0 +1,14 @@
+{
+  "run_at": "2026-10-17T20:37:39.989827+00:00",
+  "latest_draw": 2458,
+  "downloaded": 2458,
+  "already_cached": 0,
+  "failed": [],
+  "requests": 2583,
+  "elapsed_seconds": 2459.2,
+  "robots": {
+    "robots_status": 404,
+    "draw_pages_allowed": true
+  },
+  "index_draws": 2458
+}

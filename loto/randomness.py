@@ -273,21 +273,25 @@ def run_randomness_tests(df: pd.DataFrame, sim_counts: np.ndarray | None = None)
     except Exception as exc:  # pragma: no cover
         log.warning("ruptures unavailable: %s", exc)
 
-    # ---------- F. calendar --------------------------------------------------------
-    dates = pd.to_datetime(df["draw_date"])
-    for name, lab in [("weekday", dates.dt.dayofweek.to_numpy()), ("month", dates.dt.month.to_numpy()),
+    # ---------- F. calendar (draws with uncertain dates excluded) -----------------
+    cal = ~df["date_uncertain"].astype(bool).to_numpy() if "date_uncertain" in df else np.ones(N, bool)
+    dates = pd.to_datetime(df["draw_date"])[cal]
+    ind_c, nums_c, Nc = ind[cal], nums[cal], int(cal.sum())
+    wd = dates.dt.dayofweek.to_numpy()
+    wd = np.where(np.isin(wd, [0, 3]), wd, 7)   # Monday / Thursday / other (rescheduled)
+    for name, lab in [("weekday (Mon/Thu/other)", wd), ("month", dates.dt.month.to_numpy()),
                       ("day_of_month_bucket", (dates.dt.day.to_numpy() - 1) // 8)]:
         if len(np.unique(lab)) > 1:
-            s, pv = permutation_contingency(lab, ind, n_perm, rng)
-            T.add("F_calendar", "number x calendar label (permutation)", name, s, pv, "permutation", N)
+            s, pv = permutation_contingency(lab, ind_c, n_perm, rng)
+            T.add("F_calendar", "number x calendar label (permutation)", name, s, pv, "permutation", Nc)
     dom = dates.dt.day.to_numpy()
-    hits = sum(int(d in set(r)) for d, r in zip(dom, nums.tolist()))
+    hits = sum(int(d in set(r)) for d, r in zip(dom, nums_c.tolist()))
     T.add("F_calendar", "day-of-month number drawn (exact binomial)", "day_of_month in draw", hits,
-          stats.binomtest(hits, N, P).pvalue, "exact", N, note=f"{hits} vs expected {N * P:.1f}")
+          stats.binomtest(hits, Nc, P).pvalue, "exact", Nc, note=f"{hits} vs expected {Nc * P:.1f}")
     mon = dates.dt.month.to_numpy()
-    hits = sum(int(d in set(r)) for d, r in zip(mon, nums.tolist()))
+    hits = sum(int(d in set(r)) for d, r in zip(mon, nums_c.tolist()))
     T.add("F_calendar", "month number drawn (exact binomial)", "month in draw", hits,
-          stats.binomtest(hits, N, P).pvalue, "exact", N, note=f"{hits} vs expected {N * P:.1f}")
+          stats.binomtest(hits, Nc, P).pvalue, "exact", Nc, note=f"{hits} vs expected {Nc * P:.1f}")
 
     # ---------- G. periodicity -----------------------------------------------------
     for k in range(POOL):

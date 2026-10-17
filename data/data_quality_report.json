@@ -1,0 +1,673 @@
+{
+  "generated_at": "2026-10-17T20:44:01.445768+00:00",
+  "passed": true,
+  "n_draws": 2458,
+  "first_draw": {
+    "draw": 1,
+    "date": "2002-09-12"
+  },
+  "last_draw": {
+    "draw": 2458,
+    "date": "2026-10-15"
+  },
+  "expected_draw_ids": 2458,
+  "completeness_pct": 100.0,
+  "issue_counts": {
+    "out_of_range": 0,
+    "duplicate_numbers_within_draw": 0,
+    "bonus_out_of_range": 0,
+    "bonus_in_main": 0,
+    "duplicate_draw_ids": 0,
+    "missing_draw_ids": 0,
+    "non_increasing_dates": 0,
+    "duplicate_dates": 0,
+    "dropdown_date_mismatch": 0,
+    "index_date_mismatch": 0,
+    "index_missing": 0,
+    "displayed_vs_sorted_mismatch": 0,
+    "adjacent_identical_draws_in_analysis_set": 0
+  },
+  "issues": {
+    "out_of_range": [],
+    "duplicate_numbers_within_draw": [],
+    "bonus_out_of_range": [],
+    "bonus_in_main": [],
+    "duplicate_draw_ids": [],
+    "missing_draw_ids": [],
+    "non_increasing_dates": [],
+    "duplicate_dates": [],
+    "dropdown_date_mismatch": [],
+    "index_date_mismatch": [],
+    "index_missing": [],
+    "displayed_vs_sorted_mismatch": [],
+    "adjacent_identical_draws_in_analysis_set": []
+  },
+  "critical_checks": [
+    "out_of_range",
+    "duplicate_numbers_within_draw",
+    "bonus_out_of_range",
+    "bonus_in_main",
+    "duplicate_draw_ids",
+    "missing_draw_ids",
+    "non_increasing_dates",
+    "duplicate_dates",
+    "displayed_vs_sorted_mismatch"
+  ],
+  "displayed_order": {
+    "draws_displayed_unsorted": 6,
+    "draws_displayed_sorted": 2452,
+    "last_unsorted_draw": 1285,
+    "note": "Where the page lists balls unsorted we assume this is the order drawn; sorted pages give no draw-order information."
+  },
+  "schedule": {
+    "weekday_counts": {
+      "Thursday": 1219,
+      "Monday": 1160,
+      "Tuesday": 48,
+      "Friday": 12,
+      "Wednesday": 3,
+      "Sunday": 1,
+      "Saturday": 1
+    },
+    "draws_per_year": {
+      "2002": 16,
+      "2003": 97,
+      "2004": 105,
+      "2005": 101,
+      "2006": 95,
+      "2007": 104,
+      "2008": 103,
+      "2009": 105,
+      "2010": 104,
+      "2011": 104,
+      "2012": 105,
+      "2013": 104,
+      "2014": 104,
+      "2015": 105,
+      "2016": 104,
+      "2017": 104,
+      "2018": 105,
+      "2019": 101,
+      "2020": 91,
+      "2021": 95,
+      "2022": 104,
+      "2023": 104,
+      "2024": 101,
+      "2025": 104,
+      "2026": 79
+    },
+    "gap_days_histogram": {
+      "1": 3,
+      "2": 47,
+      "3": 1154,
+      "4": 1153,
+      "5": 47,
+      "6": 3,
+      "7": 28,
+      "9": 1,
+      "11": 2,
+      "14": 1,
+      "18": 1,
+      "35": 2,
+      "46": 1
+    },
+    "gaps_over_14_days": [
+      {
+        "draw": 388,
+        "date": "2006-08-17",
+        "gap_days": 35
+      },
+      {
+        "draw": 1802,
+        "date": "2020-04-27",
+        "gap_days": 46
+      },
+      {
+        "draw": 1875,
+        "date": "2021-02-15",
+        "gap_days": 35
+      },
+      {
+        "draw": 2253,
+        "date": "2024-10-14",
+        "gap_days": 18
+      }
+    ]
+  },
+  "rules_checked": {
+    "pool": 42,
+    "pick": 6,
+    "main_numbers_distinct_in_range": true,
+    "bonus_in_range_and_not_in_main": true
+  },
+  "repeated_combinations_in_analysis_set": {},
+  "raw_published_data": {
+    "issue_counts": {
+      "out_of_range": 0,
+      "duplicate_numbers_within_draw": 0,
+      "bonus_out_of_range": 0,
+      "bonus_in_main": 0,
+      "duplicate_draw_ids": 0,
+      "missing_draw_ids": 0,
+      "non_increasing_dates": 21,
+      "duplicate_dates": 14,
+      "dropdown_date_mismatch": 0,
+      "index_date_mismatch": 0,
+      "index_missing": 0,
+      "displayed_vs_sorted_mismatch": 0
+    },
+    "issues": {
+      "out_of_range": [],
+      "duplicate_numbers_within_draw": [],
+      "bonus_out_of_range": [],
+      "bonus_in_main": [],
+      "duplicate_draw_ids": [],
+      "missing_draw_ids": [],
+      "non_increasing_dates": [
+        230,
+        232,
+        244,
+        247,
+        265,
+        271,
+        274,
+        279,
+        290,
+        343,
+        380,
+        381,
+        382,
+        383,
+        384,
+        385,
+        386,
+        387,
+        388,
+        463,
+        570
+      ],
+      "duplicate_dates": [
+        232,
+        244,
+        307,
+        380,
+        381,
+        382,
+        383,
+        384,
+        385,
+        386,
+        387,
+        388,
+        463,
+        570
+      ],
+      "dropdown_date_mismatch": [],
+      "index_date_mismatch": [],
+      "index_missing": [],
+      "displayed_vs_sorted_mismatch": []
+    }
+  },
+  "cleaning": {
+    "regular_draw_weekdays": [
+      "Monday",
+      "Thursday"
+    ],
+    "duplicate_runs": [
+      {
+        "draws": [
+          379,
+          380,
+          381,
+          382,
+          383,
+          384,
+          385,
+          386,
+          387,
+          388
+        ],
+        "kept": 388,
+        "combination": "1-4-7-11-12-32-15",
+        "date": "2006-08-17"
+      },
+      {
+        "draws": [
+          462,
+          463
+        ],
+        "kept": 463,
+        "combination": "13-20-21-30-32-36-17",
+        "date": "2007-05-07"
+      },
+      {
+        "draws": [
+          569,
+          570
+        ],
+        "kept": 570,
+        "combination": "15-16-30-33-40-42-25",
+        "date": "2008-05-15"
+      }
+    ],
+    "duplicate_records_excluded": 11,
+    "date_corrections": [
+      {
+        "draw": 229,
+        "raw": "2005-07-02",
+        "corrected": "2005-02-07",
+        "weekday": "Monday"
+      },
+      {
+        "draw": 246,
+        "raw": "2005-07-04",
+        "corrected": "2005-04-07",
+        "weekday": "Thursday"
+      },
+      {
+        "draw": 264,
+        "raw": "2005-09-06",
+        "corrected": "2005-06-09",
+        "weekday": "Thursday"
+      },
+      {
+        "draw": 271,
+        "raw": "2005-04-07",
+        "corrected": "2005-07-04",
+        "weekday": "Monday"
+      },
+      {
+        "draw": 273,
+        "raw": "2005-11-07",
+        "corrected": "2005-07-11",
+        "weekday": "Monday"
+      },
+      {
+        "draw": 279,
+        "raw": "2005-01-08",
+        "corrected": "2005-08-01",
+        "weekday": "Monday"
+      },
+      {
+        "draw": 280,
+        "raw": "2005-04-08",
+        "corrected": "2005-08-04",
+        "weekday": "Thursday"
+      },
+      {
+        "draw": 290,
+        "raw": "2005-08-09",
+        "corrected": "2005-09-08",
+        "weekday": "Thursday"
+      },
+      {
+        "draw": 342,
+        "raw": "2006-09-03",
+        "corrected": "2006-03-09",
+        "weekday": "Thursday"
+      }
+    ],
+    "date_uncertain_draws": [
+      231,
+      232,
+      244
+    ],
+    "off_schedule_weekday_draws": [
+      {
+        "draw": 69,
+        "date": "2003-07-29",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 231,
+        "date": "2005-02-20",
+        "weekday": "Sunday"
+      },
+      {
+        "draw": 232,
+        "date": "2005-02-20",
+        "weekday": "Sunday"
+      },
+      {
+        "draw": 235,
+        "date": "2005-03-01",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 239,
+        "date": "2005-03-15",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 245,
+        "date": "2005-04-06",
+        "weekday": "Wednesday"
+      },
+      {
+        "draw": 259,
+        "date": "2005-05-24",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 261,
+        "date": "2005-05-29",
+        "weekday": "Sunday"
+      },
+      {
+        "draw": 293,
+        "date": "2005-09-20",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 303,
+        "date": "2005-10-25",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 317,
+        "date": "2005-12-14",
+        "weekday": "Wednesday"
+      },
+      {
+        "draw": 333,
+        "date": "2006-02-08",
+        "weekday": "Wednesday"
+      },
+      {
+        "draw": 364,
+        "date": "2006-05-26",
+        "weekday": "Friday"
+      },
+      {
+        "draw": 372,
+        "date": "2006-06-23",
+        "weekday": "Friday"
+      },
+      {
+        "draw": 415,
+        "date": "2006-11-21",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 416,
+        "date": "2006-11-25",
+        "weekday": "Saturday"
+      },
+      {
+        "draw": 425,
+        "date": "2006-12-26",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 427,
+        "date": "2007-01-02",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 434,
+        "date": "2007-01-26",
+        "weekday": "Friday"
+      },
+      {
+        "draw": 455,
+        "date": "2007-04-10",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 472,
+        "date": "2007-06-08",
+        "weekday": "Friday"
+      },
+      {
+        "draw": 474,
+        "date": "2007-06-15",
+        "weekday": "Friday"
+      },
+      {
+        "draw": 476,
+        "date": "2007-06-22",
+        "weekday": "Friday"
+      },
+      {
+        "draw": 544,
+        "date": "2008-02-15",
+        "weekday": "Friday"
+      },
+      {
+        "draw": 568,
+        "date": "2008-05-09",
+        "weekday": "Friday"
+      },
+      {
+        "draw": 634,
+        "date": "2008-12-26",
+        "weekday": "Friday"
+      },
+      {
+        "draw": 636,
+        "date": "2009-01-02",
+        "weekday": "Friday"
+      },
+      {
+        "draw": 681,
+        "date": "2009-06-09",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 747,
+        "date": "2010-01-26",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 767,
+        "date": "2010-04-06",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 877,
+        "date": "2011-04-26",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 947,
+        "date": "2011-12-27",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 949,
+        "date": "2012-01-03",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 977,
+        "date": "2012-04-10",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 979,
+        "date": "2012-04-17",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1015,
+        "date": "2012-08-21",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1079,
+        "date": "2013-04-02",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1089,
+        "date": "2013-05-07",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1189,
+        "date": "2014-04-22",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1260,
+        "date": "2014-12-26",
+        "weekday": "Friday"
+      },
+      {
+        "draw": 1262,
+        "date": "2015-01-02",
+        "weekday": "Friday"
+      },
+      {
+        "draw": 1289,
+        "date": "2015-04-07",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1291,
+        "date": "2015-04-14",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1391,
+        "date": "2016-03-29",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1401,
+        "date": "2016-05-03",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1501,
+        "date": "2017-04-18",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1573,
+        "date": "2017-12-26",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1575,
+        "date": "2018-01-02",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1601,
+        "date": "2018-04-03",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1603,
+        "date": "2018-04-10",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1611,
+        "date": "2018-05-08",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1711,
+        "date": "2019-04-23",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1713,
+        "date": "2019-04-30",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1889,
+        "date": "2021-04-06",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1897,
+        "date": "2021-05-04",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1997,
+        "date": "2022-04-19",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 1999,
+        "date": "2022-04-26",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 2099,
+        "date": "2023-04-11",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 2101,
+        "date": "2023-04-18",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 2173,
+        "date": "2023-12-26",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 2175,
+        "date": "2024-01-02",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 2201,
+        "date": "2024-04-02",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 2211,
+        "date": "2024-05-07",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 2249,
+        "date": "2024-09-17",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 2307,
+        "date": "2025-04-22",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 2404,
+        "date": "2026-04-07",
+        "weekday": "Tuesday"
+      },
+      {
+        "draw": 2405,
+        "date": "2026-04-14",
+        "weekday": "Tuesday"
+      }
+    ],
+    "analysis_draws": 2447
+  },
+  "n_draw_ids": 2458,
+  "n_analysis_draws": 2447,
+  "note": "Draw IDs 1..latest are all present. Placeholder duplicate records in the official history are excluded from analysis and date day/month swaps corrected, as documented in 'cleaning'.",
+  "parse_errors": [],
+  "site_index_entries": 2458,
+  "scrape_summary": {
+    "run_at": "2026-10-17T20:37:39.989827+00:00",
+    "latest_draw": 2458,
+    "downloaded": 2458,
+    "already_cached": 0,
+    "failed": [],
+    "requests": 2583,
+    "elapsed_seconds": 2459.2,
+    "robots": {
+      "robots_status": 404,
+      "draw_pages_allowed": true
+    },
+    "index_draws": 2458
+  }
+}

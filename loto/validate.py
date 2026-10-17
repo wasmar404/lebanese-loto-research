@@ -16,7 +16,9 @@ from .storage import DISPLAYED, MAIN, build_dataset, save_dataset
 log = setup_logging("loto.validate")
 
 
-def validate_frame(df: pd.DataFrame, index: dict[int, str] | None = None, expected_latest: int | None = None) -> dict:
+def validate_frame(df: pd.DataFrame, index: dict[int, str] | None = None, expected_latest: int | None = None,
+                   date_rows: pd.Series | None = None) -> dict:
+    """date_rows: boolean mask of rows whose dates enter the chronology checks (default all)."""
     cfg = load_config()["game"]
     pool, pick = cfg["pool_size"], cfg["pick"]
     issues: dict[str, list] = {k: [] for k in (
@@ -38,7 +40,8 @@ def validate_frame(df: pd.DataFrame, index: dict[int, str] | None = None, expect
             issues["bonus_in_main"].append(int(row.draw))
         if sorted(disp[i].tolist()) != ns.tolist():
             issues["displayed_vs_sorted_mismatch"].append(int(row.draw))
-        if row.get("dropdown_date") and row["dropdown_date"] != str(row["draw_date"])[:10]:
+        page_date = row["draw_date_raw"] if "draw_date_raw" in row and isinstance(row.get("draw_date_raw"), str) else str(row["draw_date"])[:10]
+        if row.get("dropdown_date") and row["dropdown_date"] != page_date:
             issues["dropdown_date_mismatch"].append(int(row.draw))
 
     ids = df["draw"].astype(int)
@@ -46,13 +49,18 @@ def validate_frame(df: pd.DataFrame, index: dict[int, str] | None = None, expect
     latest = int(expected_latest or ids.max())
     issues["missing_draw_ids"] = sorted(set(range(1, latest + 1)) - set(ids.tolist()))
     dates = pd.to_datetime(df["draw_date"])
-    order = df.assign(_d=dates).sort_values("draw")
+    order = df.assign(_d=dates)
+    if date_rows is not None:
+        order = order[date_rows.to_numpy()]
+    order = order.sort_values("draw")
     nd = order["_d"].diff().dt.days
     issues["non_increasing_dates"] = order.loc[nd <= 0, "draw"].astype(int).tolist()
     issues["duplicate_dates"] = order.loc[order["_d"].duplicated(), "draw"].astype(int).tolist()
 
     if index:
-        for d, dstr in zip(order["draw"].astype(int), order["_d"].dt.strftime("%Y-%m-%d")):
+        src = df.sort_values("draw")
+        page_dates = src["draw_date_raw"] if "draw_date_raw" in src else pd.to_datetime(src["draw_date"]).dt.strftime("%Y-%m-%d")
+        for d, dstr in zip(src["draw"].astype(int), page_dates):
             if d not in index:
                 issues["index_missing"].append(d)
             elif index[d] != dstr:
@@ -63,7 +71,8 @@ def validate_frame(df: pd.DataFrame, index: dict[int, str] | None = None, expect
     by_year = order.groupby(order["_d"].dt.year)["draw"].count().to_dict()
     gap_hist = gaps.value_counts().sort_index().to_dict()
     long_gaps = order.loc[nd > 14, ["draw", "_d"]].assign(gap_days=nd[nd > 14])
-    long_gap_list = [{"draw": int(r.draw), "date": r._d.strftime("%Y-%m-%d"), "gap_days": int(r.gap_days)} for r in long_gaps.itertuples()]
+    long_gap_list = [{"draw": int(d), "date": dt.strftime("%Y-%m-%d"), "gap_days": int(g)}
+                     for d, dt, g in zip(long_gaps["draw"], long_gaps["_d"], long_gaps["gap_days"])]
 
     critical = ["out_of_range", "duplicate_numbers_within_draw", "bonus_out_of_range", "bonus_in_main",
                 "duplicate_draw_ids", "missing_draw_ids", "non_increasing_dates", "duplicate_dates",
@@ -101,15 +110,37 @@ def validate_frame(df: pd.DataFrame, index: dict[int, str] | None = None, expect
 
 
 def run_validation() -> dict:
+    from .clean import clean_frame
     draws, prizes, parse_errors = build_dataset()
     if draws.empty:
         raise SystemExit("No cached draws found. Run `python -m loto scrape` first.")
-    save_dataset(draws, prizes)
     idx_path = ROOT / load_config()["paths"]["data_dir"] / "site_draw_index.json"
     index = {int(k): v for k, v in json.loads(idx_path.read_text()).items()} if idx_path.exists() else None
     summary_path = ROOT / load_config()["paths"]["data_dir"] / "scrape_summary.json"
     expected_latest = json.loads(summary_path.read_text()).get("latest_draw") if summary_path.exists() else None
-    report = validate_frame(draws, index=index, expected_latest=expected_latest)
+
+    # 1. raw data exactly as published
+    raw = validate_frame(draws, index=index, expected_latest=expected_latest)
+    # 2. documented cleaning (see loto/clean.py), then validation of what the analysis uses
+    clean, clog = clean_frame(draws)
+    save_dataset(clean, prizes)
+    dated = clean["analysis_include"] & ~clean["date_uncertain"]
+    report = validate_frame(clean, index=index, expected_latest=expected_latest, date_rows=dated)
+    ana = clean[clean["analysis_include"]]
+    key = ana[[f"n{i}" for i in range(1, 7)] + ["bonus"]].astype(str).agg("-".join, axis=1)
+    adj_dups = int((key.to_numpy()[1:] == key.to_numpy()[:-1]).sum())
+    report["issues"]["adjacent_identical_draws_in_analysis_set"] = [adj_dups] if adj_dups else []
+    report["issue_counts"]["adjacent_identical_draws_in_analysis_set"] = adj_dups
+    # any repeated full combination anywhere in the analysis set (expected ~0.6 by chance)
+    vc = key.value_counts()
+    report["repeated_combinations_in_analysis_set"] = {k: int(v) for k, v in vc[vc > 1].items()}
+    report["passed"] = report["passed"] and adj_dups == 0
+    report["raw_published_data"] = {"issue_counts": raw["issue_counts"], "issues": raw["issues"]}
+    report["cleaning"] = clog
+    report["n_draw_ids"] = int(len(clean))
+    report["n_analysis_draws"] = int(clean["analysis_include"].sum())
+    report["note"] = ("Draw IDs 1..latest are all present. Placeholder duplicate records in the official history are "
+                      "excluded from analysis and date day/month swaps corrected, as documented in 'cleaning'.")
     report["parse_errors"] = parse_errors
     if parse_errors:
         report["passed"] = False

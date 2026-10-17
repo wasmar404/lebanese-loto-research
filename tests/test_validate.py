@@ -33,6 +33,12 @@ def test_detects_defects():
     assert c["out_of_range"] == 1 and c["bonus_in_main"] == 1 and c["non_increasing_dates"] >= 1
 
 
+def test_long_gaps_reported():
+    rows = GOOD + [(4, "2002-10-30", [3, 9, 15, 22, 31, 40], 2)]
+    r = validate_frame(frame(rows), expected_latest=4)
+    assert r["schedule"]["gaps_over_14_days"] == [{"draw": 4, "date": "2002-10-30", "gap_days": 41}]
+
+
 def test_index_cross_check():
     r = validate_frame(frame(GOOD), index={1: "2002-09-12", 2: "2002-09-17"}, expected_latest=3)
     assert r["issue_counts"]["index_date_mismatch"] == 1
