@@ -6,6 +6,13 @@ It scrapes the complete official history, validates it, measures every draw agai
 
 The findings are in **[`reports/RESEARCH_REPORT.md`](reports/RESEARCH_REPORT.md)**.
 
+## Findings in brief
+
+* **Data:** all 2,458 published draws (#1, 12 Sep 2002 – #2458, 15 Oct 2026) were retrieved. LLDJ's own history contains 11 placeholder duplicates (draws 379–387 around the 2006 war, plus 462 and 569) and 9 day/month-swapped dates. Excluding the placeholders leaves 2,447 genuine draws.
+* **Randomness:** of 2,915 tests, 163 fall below p = 0.05 (≈146 expected by chance) and none survives FDR correction. All 28 history-level statistics sit inside the range of 10,000 simulated fair histories.
+* **Prediction:** 18 models (hot/cold/overdue, Bayesian, Markov, logistic, random forest, XGBoost, LightGBM, CatBoost, GRU, regimes, ensemble) were walk-forward backtested on an untouched 367-draw holdout. **None beat random selection.** The candidate tickets are therefore random, and labelled that way.
+* **The one real pattern is in the players:** numbers ≤ 31 are heavily over-played and consecutive numbers under-played, so unpopular tickets share pari-mutuel prizes with fewer winners. This does not change the odds of winning.
+
 > Every valid six-number ticket has exactly the same 1 in 5,245,786 chance of winning the jackpot in a fair draw. This project tests that rigorously; it cannot change it.
 
 ## Quick start
@@ -26,7 +33,7 @@ Individual steps:
 | `python -m loto update` | Fetch new draws, rebuild the dataset and re-validate |
 | `python -m loto validate` | Build SQLite / CSV / Parquet and `data/data_quality_report.json`. **Modelling refuses to run until this passes.** |
 | `python -m loto simulate` | Monte Carlo: 10,000 fair histories of the same length + 5 million bulk fair draws |
-| `python -m loto analyze` | Number / pair / structure statistics, ~2,900 randomness tests with FDR correction, Phase 4 hypotheses, structural filters, player-popularity analysis, HTML reports |
+| `python -m loto analyze` | Number / pair / structure statistics, 2,915 randomness tests with FDR correction, Phase 4 hypotheses, structural filters, player-popularity analysis, HTML reports |
 | `python -m loto backtest` | Tune → select → untouched-holdout walk-forward backtest of 19 models + negative controls |
 | `python -m loto predict [-n 10] [--filter conservative]` | Candidate tickets for the next scheduled draw |
 | `python -m loto hardware` | Detected CPU / RAM / GPU |

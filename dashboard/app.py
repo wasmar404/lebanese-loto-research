@@ -91,7 +91,7 @@ if page == "Historical Results":
     for x in contains:
         view = view[(view[[f"n{i}" for i in range(1, 7)]] == x).any(axis=1)]
     cols = ["draw", "draw_date", "n1", "n2", "n3", "n4", "n5", "n6", "bonus", "weekday", "jackpot_winners"]
-    st.dataframe(view[cols].sort_values("draw", ascending=False), use_container_width=True, hide_index=True)
+    st.dataframe(view[cols].sort_values("draw", ascending=False), width="stretch", hide_index=True)
     st.download_button("Download CSV", view.to_csv(index=False), "loto_history_filtered.csv", "text/csv")
 
 # ------------------------------------------------------------------------------------------
@@ -107,7 +107,7 @@ elif page == "Statistical Analysis":
         fig.add_hline(y=exp, line_dash="dash")
         fig.add_hrect(y0=exp - 1.96 * sd, y1=exp + 1.96 * sd, fillcolor="gray", opacity=0.15, line_width=0)
         fig.update_layout(title=f"Frequency in last {w} draws (band: 95% range for one number in a fair lottery)")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         hc = pd.DataFrame({"number": range(1, 43), "count": cnt, "z": (cnt - exp) / sd}).sort_values("z", ascending=False)
         c1, c2 = st.columns(2)
         c1.write("Hottest in window"); c1.dataframe(hc.head(10), hide_index=True)
@@ -117,16 +117,16 @@ elif page == "Statistical Analysis":
         heat = pd.DataFrame(ind, columns=range(1, 43)).groupby(years.values).mean() / P0
         st.plotly_chart(px.imshow(heat.T, aspect="auto", origin="lower", color_continuous_scale="RdBu_r", zmin=0.5, zmax=1.5,
                                   labels=dict(x="year", y="number", color="freq / expected"), title="Number heatmap by year"),
-                        use_container_width=True)
+                        width="stretch")
         sel = st.multiselect("Trend: rolling frequency of numbers", list(range(1, 43)), default=[7, 21, 42])
         rw = st.slider("Rolling window", 50, 500, 250, 50)
         roll = pd.DataFrame(ind, columns=range(1, 43)).rolling(rw).mean() / P0
-        st.plotly_chart(px.line(roll[sel].assign(draw=df.draw), x="draw", y=sel, title="Rolling frequency / expected"), use_container_width=True)
+        st.plotly_chart(px.line(roll[sel].assign(draw=df.draw), x="draw", y=sel, title="Rolling frequency / expected"), width="stretch")
     with tab2:
         pairs = load_csv("pair_statistics.csv")
         if pairs is not None:
             st.dataframe(pairs.head(30), hide_index=True)
-            st.plotly_chart(px.histogram(pairs, x="count", nbins=40, title="Distribution of pair counts (861 pairs)"), use_container_width=True)
+            st.plotly_chart(px.histogram(pairs, x="count", nbins=40, title="Distribution of pair counts (861 pairs)"), width="stretch")
         trips = load_csv("triplet_statistics.csv")
         if trips is not None:
             st.write("Most frequent triplets"); st.dataframe(trips.head(20), hide_index=True)
@@ -136,7 +136,7 @@ elif page == "Statistical Analysis":
         pmf = exact_distribution(col)
         obs = feats[col].value_counts(normalize=True).reindex(pmf.index, fill_value=0)
         fig = go.Figure([go.Bar(x=pmf.index, y=obs, name="observed", opacity=0.7), go.Scatter(x=pmf.index, y=pmf, name="exact fair", mode="lines+markers")])
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     with tab4:
         cmp = pd.read_csv(p("artifacts_dir") / "history_level_comparison.csv") if (p("artifacts_dir") / "history_level_comparison.csv").exists() else None
         sims_path = p("artifacts_dir") / "simulated_histories.parquet"
@@ -148,7 +148,7 @@ elif page == "Statistical Analysis":
                 fig = go.Figure(go.Histogram(x=sims[stat], nbinsx=60))
                 fig.add_vline(x=float(cmp.set_index("statistic").loc[stat, "observed"]), line_color="red", line_width=3)
                 fig.update_layout(title=f"{stat}: real (red) vs {len(sims):,} fair histories")
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
     with tab5:
         tests = load_csv("randomness_tests.csv")
         if tests is not None:
@@ -179,9 +179,9 @@ elif page == "Model Research":
                                                                   arrayminus=c.mean_hits - c.hits_ci_low)))
     fig.add_hline(y=36 / 42, line_dash="dash", annotation_text="random 0.857")
     fig.update_layout(title=f"Mean matching numbers per ticket ({period}) with 95% CI")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     st.plotly_chart(px.bar(c, x="model", y="log_score_gain", error_y=1.96 * c.log_score_gain_se,
-                           title="Log-score gain vs uniform (positive = better calibrated forecasts than random)"), use_container_width=True)
+                           title="Log-score gain vs uniform (positive = better calibrated forecasts than random)"), width="stretch")
     st.dataframe(c[["model", "family", "n_draws", "mean_hits", "hits_ci_low", "hits_ci_high", "p_hits_better_than_random", "p_hits_fdr_across_models",
                     "log_score_gain", "p_log_score_better_than_uniform", "brier", "ece", "calibration_slope", "compute_seconds", "verdict"]], hide_index=True)
     st.subheader("Training configuration")

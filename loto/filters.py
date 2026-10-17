@@ -13,6 +13,8 @@ has exactly the same 1-in-5,245,786 chance in a fair draw.  A filter can only ev
 """
 from __future__ import annotations
 
+from functools import lru_cache
+
 import numpy as np
 import pandas as pd
 from scipy import stats
@@ -22,10 +24,12 @@ from .features import all_combinations, exact_feature_table, structural_features
 POOL, PICK = 42, 6
 
 
+@lru_cache(maxsize=None)
 def _sum_q(q):
     return float(exact_feature_table()["sum"].quantile(q))
 
 
+@lru_cache(maxsize=1)
 def filter_definitions() -> dict[str, tuple[str, callable]]:
     s005, s995 = _sum_q(0.005), _sum_q(0.995)
     s01, s99 = _sum_q(0.01), _sum_q(0.99)

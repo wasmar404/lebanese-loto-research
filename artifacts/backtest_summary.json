@@ -1,0 +1,182 @@
+{
+  "periods": {
+    "tuning": [
+      500,
+      1713
+    ],
+    "selection": [
+      1713,
+      2080
+    ],
+    "holdout": [
+      2080,
+      2447
+    ],
+    "all_oos": [
+      500,
+      2447
+    ]
+  },
+  "n_draws": 2447,
+  "final_model": "uniform_random",
+  "selection_best_model": "markov_lag1",
+  "selection_best_significant": false,
+  "ensemble_members": [
+    "bayes_shrinkage",
+    "markov_lag1",
+    "xgboost"
+  ],
+  "verdicts": {
+    "uniform_random": "BASELINE",
+    "frequency_hot": "REJECT (no edge over random on unseen draws)",
+    "bayes_shrinkage": "REJECT (no edge over random on unseen draws)",
+    "cold_overdue": "REJECT (no edge over random on unseen draws)",
+    "recency_window": "REJECT (no edge over random on unseen draws)",
+    "ewma_frequency": "REJECT (no edge over random on unseen draws)",
+    "gap_hazard": "REJECT (no edge over random on unseen draws)",
+    "markov_lag1": "REJECT (no edge over random on unseen draws)",
+    "pair_association": "REJECT (no edge over random on unseen draws)",
+    "logistic_l2": "REJECT (no edge over random on unseen draws)",
+    "logistic_l1": "REJECT (no edge over random on unseen draws)",
+    "random_forest": "REJECT (no edge over random on unseen draws)",
+    "hist_gradient_boosting": "REJECT (no edge over random on unseen draws)",
+    "xgboost": "REJECT (no edge over random on unseen draws)",
+    "lightgbm": "REJECT (no edge over random on unseen draws)",
+    "catboost": "REJECT (no edge over random on unseen draws)",
+    "gru_sequence": "REJECT (no edge over random on unseen draws)",
+    "kmeans_regime": "REJECT (no edge over random on unseen draws)",
+    "ensemble_top3": "REJECT (no edge over random on unseen draws)"
+  },
+  "n_tuning_configurations": 61,
+  "tuned_params": {
+    "uniform_random": {},
+    "frequency_hot": {
+      "alpha": 0.0
+    },
+    "bayes_shrinkage": {
+      "alpha": 1000
+    },
+    "cold_overdue": {},
+    "recency_window": {
+      "w": 500,
+      "alpha": 1.0
+    },
+    "ewma_frequency": {
+      "half_life": 250
+    },
+    "gap_hazard": {
+      "kappa": 0.1
+    },
+    "markov_lag1": {
+      "alpha": 500
+    },
+    "pair_association": {
+      "alpha": 100
+    },
+    "logistic_l2": "defaults (regularised)",
+    "logistic_l1": "defaults (regularised)",
+    "random_forest": "defaults (regularised)",
+    "hist_gradient_boosting": "defaults (regularised)",
+    "xgboost": {
+      "max_depth": 2,
+      "learning_rate": 0.011566231584511118,
+      "n_estimators": 72,
+      "reg_lambda": 25.85414937768141
+    },
+    "lightgbm": {
+      "num_leaves": 28,
+      "learning_rate": 0.01119517231294447,
+      "n_estimators": 80,
+      "min_child_samples": 623,
+      "reg_lambda": 0.12469519504298016
+    },
+    "catboost": "defaults (regularised)",
+    "gru_sequence": {
+      "seq_len": 20,
+      "hidden": 32
+    },
+    "kmeans_regime": {
+      "k": 3,
+      "window": 50
+    },
+    "ensemble_top3": {
+      "members": [
+        "bayes_shrinkage",
+        "markov_lag1",
+        "xgboost"
+      ]
+    }
+  },
+  "total_compute_seconds": 282.26353001594543,
+  "total_model_fits": 575,
+  "hits_null": {
+    "mean": 0.8571428571428571,
+    "var": 0.6450970632155301,
+    "pmf": [
+      0.37130603497740855,
+      0.43119410513505513,
+      0.16843519731838089,
+      0.027221850071657522,
+      0.0018014459606243945,
+      4.117590767141473e-05,
+      1.9062920218247562e-07
+    ]
+  },
+  "min_detectable_hits_effect_holdout": 0.11739173777157107,
+  "feature_names": [
+    "freq_10",
+    "freq_20",
+    "freq_50",
+    "freq_100",
+    "freq_250",
+    "freq_all",
+    "log_gap",
+    "overdue_ratio",
+    "ewma_10",
+    "ewma_50",
+    "in_t-1",
+    "in_t-2",
+    "in_t-3",
+    "markov_lift",
+    "pair_lift",
+    "number_scaled",
+    "number_odd",
+    "number_decade",
+    "prev_draw_sum_scaled"
+  ],
+  "hardware": {
+    "cpus": 2,
+    "platform": "Linux-6.18.44-fc-v139-x86_64-with-glibc2.39",
+    "python": "3.13.16",
+    "ram_gb": 7.8,
+    "gpu": null,
+    "torch": "2.14.1+cu130"
+  },
+  "elapsed_seconds": 377.9728720188141,
+  "stat_params": {
+    "uniform_random": {},
+    "frequency_hot": {
+      "alpha": 0.0
+    },
+    "bayes_shrinkage": {
+      "alpha": 1000
+    },
+    "cold_overdue": {},
+    "recency_window": {
+      "w": 500,
+      "alpha": 1.0
+    },
+    "ewma_frequency": {
+      "half_life": 250
+    },
+    "gap_hazard": {
+      "kappa": 0.1
+    },
+    "markov_lag1": {
+      "alpha": 500
+    },
+    "pair_association": {
+      "alpha": 100
+    }
+  }
+}

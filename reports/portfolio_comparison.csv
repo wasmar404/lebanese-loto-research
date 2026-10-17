@@ -1,0 +1,4 @@
+model,n_tickets,period,n_draws,mean_hits_per_ticket,mean_best_ticket_hits,draws_with_any_3plus,draws_with_any_4plus
+uniform_random,10,holdout,367,0.8493188010899183,2.155313351498638,91,4
+ensemble_top3,10,holdout,367,0.8474114441416893,2.155313351498638,92,4
+markov_lag1,10,holdout,367,0.8482288828337875,2.155313351498638,92,4

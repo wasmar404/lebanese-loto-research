@@ -1,0 +1,11 @@
+{"timestamp": "2026-10-17T20:39:10.276050+00:00", "command": "validate", "seconds": 30.8, "config_sha": "d21106ac469d", "passed": false, "n_draws": 2458}
+{"timestamp": "2026-10-17T20:41:57.951836+00:00", "command": "validate", "seconds": 32.9, "config_sha": "d21106ac469d", "passed": false, "n_draws": 2458}
+{"timestamp": "2026-10-17T20:43:06.927820+00:00", "command": "validate", "seconds": 31.6, "config_sha": "d21106ac469d", "passed": true, "n_draws": 2458}
+{"timestamp": "2026-10-17T20:44:01.659609+00:00", "command": "validate", "seconds": 31.4, "config_sha": "d21106ac469d", "passed": true, "n_draws": 2458}
+{"timestamp": "2026-10-17T20:46:33.546394+00:00", "command": "simulate", "seconds": 102.4, "config_sha": "d21106ac469d", "n_histories": 10000, "simulated_draws": 29470000, "extreme_stats": 0}
+{"timestamp": "2026-10-17T20:52:25.498367+00:00", "command": "analyze", "seconds": 349.9, "config_sha": "d21106ac469d", "n_tests": 2916, "raw_sig": 164, "fdr_sig": 0, "hypotheses_surviving_fdr": 0}
+{"timestamp": "2026-10-17T20:58:44.954659+00:00", "command": "backtest", "seconds": 378.0, "config_sha": "d21106ac469d", "final_model": "uniform_random", "fits": 575, "tuning_configs": 61}
+{"timestamp": "2026-10-17T21:07:22.476788+00:00", "command": "predict", "seconds": 453.6, "config_sha": "d21106ac469d", "target": {"draw": 2459, "date": "2026-10-19", "source": "lldj.com countdown", "time": "18:45"}, "no_signal": true}
+{"timestamp": "2026-10-17T21:15:08.690409+00:00", "command": "predict", "seconds": 446.3, "config_sha": "d21106ac469d", "target": {"draw": 2459, "date": "2026-10-19", "source": "lldj.com countdown", "time": "18:45"}, "no_signal": true}
+{"timestamp": "2026-10-17T21:16:37.364407+00:00", "command": "predict", "seconds": 15.2, "config_sha": "d21106ac469d", "target": {"draw": 2459, "date": "2026-10-19", "source": "lldj.com countdown", "time": "18:45"}, "no_signal": true}
+{"timestamp": "2026-10-17T21:22:51.066715+00:00", "command": "analyze", "seconds": 330.1, "config_sha": "d21106ac469d", "n_tests": 2915, "raw_sig": 163, "fdr_sig": 0, "hypotheses_surviving_fdr": 0}

@@ -153,15 +153,14 @@ def generate_candidates(df: pd.DataFrame, backtest_summary: dict, comparison: pd
         r5 = popularity[(popularity.prize_rank == 5) & (popularity.feature == "le31")]
         pop_ok = bool(len(r5) and r5.coef_log_winners.iloc[0] > 0 and r5.p_value.iloc[0] < 0.05)
     if pop_ok:
-        best_t, best_s = None, np.inf
-        for _ in range(3000):
-            t = _sample(uni, rng, "conservative")
-            pr = _profile(t)
-            s = pr["_le31"] * 1.0 + 0.5 * pr["consecutive_pairs"]
-            if s < best_s:
-                best_t, best_s = t, s
-        plan.append(("Low-popularity pattern (random, avoids widely played patterns: few numbers ≤31) - same odds, larger share if it wins",
-                     "uniform_random", best_t))
+        # score = predicted log(number of co-winners) from the fitted rank-4 popularity model
+        r4 = popularity[popularity.prize_rank == 4].set_index("feature")["coef_log_winners"]
+        pool = [_sample(uni, rng, "conservative") for _ in range(5000)]
+        pf = structural_features(np.array(pool))
+        score = sum(r4.get(f, 0.0) * pf[f].to_numpy() for f in r4.index)
+        best_t = pool[int(np.argmin(score))]
+        plan.append(("Low-popularity pattern (structure other players choose least: numbers above 31; same odds, "
+                     "fewer people to share a prize with if it wins)", "uniform_random", best_t))
     existing = [t for _, _, t in plan]
     n_left = n_candidates - len(plan)
     n_div = max(0, n_left - 1)

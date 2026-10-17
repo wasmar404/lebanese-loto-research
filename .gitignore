@@ -5,8 +5,6 @@ logs/
 data/raw_html/
 artifacts/all_combinations.npy
 artifacts/all_combination_features.parquet
-artifacts/simulated_histories.parquet
-artifacts/backtest_probs.npz
 catboost_info/
 .venv/
 .DS_Store

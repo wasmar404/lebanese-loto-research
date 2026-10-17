@@ -149,10 +149,9 @@ def run_randomness_tests(df: pd.DataFrame, sim_counts: np.ndarray | None = None)
         "low_high": np.array([0] * 21 + [1] * 21),
         "odd_even": np.array([i % 2 for i in range(1, 43)]),
         "prime": np.array([int(i in (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41)) for i in range(1, 43)]),
-        "ending_digit": np.array([i % 10 for i in range(1, 43)]),
     }
-    for m in range(3, 13):
-        partitions[f"mod_{m}"] = np.array([i % m for i in range(1, 43)])
+    for m in range(3, 13):   # mod 10 = last digit (ending); mod 2 is odd_even above
+        partitions[f"mod_{m}" if m != 10 else "mod_10 (ending digit)"] = np.array([i % m for i in range(1, 43)])
     for name, lab in partitions.items():
         G = (lab[:, None] == np.unique(lab)[None, :]).astype(float)
         o = counts @ G
